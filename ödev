@@ -1,0 +1,69 @@
+from PyQt4.QtGui import *
+from PyQt4.QtCore import *
+
+class yakitTuketimi(QDialog):
+    def __init__(self,ebeveyn=None):
+        super(yakitTuketimi,self).__init__(ebeveyn)
+        
+ #tasarım kısmı
+
+    #0.satır       
+        grid=QGridLayout()
+        grid.addWidget(QLabel('Gidilecek Yol:'),0,0)
+        self.yol=QLineEdit()
+        grid.addWidget(self.yol,0,1)
+
+   #1.satır
+        grid.addWidget(QLabel('Fiyat:'),1,0)
+        self.fiyat=QLineEdit()
+        grid.addWidget(self.fiyat,1,1)
+        
+   #2.satır   
+        grid.addWidget(QLabel('Yakit Tuketimi:'),2,0)
+        self.yakitTuketimi=QLineEdit()
+        grid.addWidget(self.yakitTuketimi,2,1)
+
+    #3.satır
+        grid.addWidget(QLabel('Tutar:'),3,0)
+        self.tutar=QLabel('')
+        grid.addWidget(self.tutar,3,1)
+
+
+    #4.satır
+        hesapla=QPushButton('Hesapla')
+        grid.addWidget(hesapla,4,0,1,2)
+        self.setLayout(grid)
+        self.setWindowTitle('Yakit Hesaplama Penceresi')
+        
+##################################################
+#hesaplama kısmı#
+
+        self.connect(hesapla,SIGNAL('pressed()'),self.yakitHesapla)
+    def yakitHesapla(self):
+        fiyat=0
+        
+        try:fiyat=float(self.fiyat.text())
+        except:pass
+        yol=0
+        try:yol=int(self.yol.text())
+        except:pass
+        yol=0
+        try:yakitTuketimi=float(self.yakitTuketimi.text())
+        except:pass
+        if not yol:
+            self.tutar.setText("<font color='purple'><i>yol Giriniz</i></font>")
+            self.yol.setFocus()
+        elif not fiyat:
+            self.tutar.setText("<font color='purple'><i>fiyat Giriniz</i></font>")
+            self.yol.setFocus()
+        elif not yakitTuketimi:
+            self.tutar.setText("<font color='purple'><i>tuketim Giriniz</i></font>")
+            self.yol.setFocus()
+        else:
+            tutar=fiyat*(yol*yakitTuketimi)/100
+            self.tutar.setText("<font color='purple'><b>%0.2f</b></font>"%tutar)
+
+uyg=QApplication([])
+pencere=yakitTuketimi()
+pencere.show()
+uyg.exec_()
